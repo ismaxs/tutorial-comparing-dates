@@ -1,6 +1,6 @@
 ## Comparación de fechas (Java8+) :calendar:
 
-![Java CI with Maven](https://github.com/ismaxs/tutorial-comparing-dates/workflows/Java%20CI%20with%20Maven/badge.svg)
+![build](https://github.com/ismaxs/tutorial-comparing-dates/workflows/build/badge.svg)
 
 Este proyecto contiene código de ejemplo para comparar fechas en Java de diferentes formas.
 

@@ -1,4 +1,4 @@
-## Comparación de fechas (Java8+) :calendar:
+## :calendar: Comparación de fechas (Java7 y Java8+) :calendar:
 
 ![build](https://github.com/ismaxs/tutorial-comparing-dates/workflows/build/badge.svg)
 

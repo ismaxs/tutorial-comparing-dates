@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -108,22 +109,28 @@ public class DatesComparison {
 	 * En este método comparamos dos objetos java.time.LocalDate
 	 */
 	private static void comparingDatesWithLocalDate() {
+		// Fecha actual
 		LocalDate today = LocalDate.now();
-		LocalDate anotherDay = LocalDate.of(2020, 7, 21);
+		// Generamos una segunda fecha diferente (sumamos o restamos una unidad de fecha, como día, mes, año...)
+		LocalDate anotherDay = today.plus(1, ChronoUnit.DAYS);
 
-		// false
+		// ¿es igual? = false
 		System.out.println(today.isEqual(anotherDay));
-		// true
+		// ¿es posterior? = true
 		System.out.println(today.isAfter(anotherDay));
-		// false
+		// ¿es anterior? = false
 		System.out.println(today.isBefore(anotherDay));
 
+		// Ahora comparamos con compareTo
 		int diff = today.compareTo(anotherDay);
 		if (diff > 0) {
+			// Si diff es mayor que 0, indica que la comparación es mayor
 			System.out.println(today + " es mayor que " + anotherDay);
 		} else if (diff < 0) {
+			// Si diff es menor que 0, indica que la comparación es menor
 			System.out.println(today + " es menor que " + anotherDay);
 		} else {
+			// Si no, indica que la comparación es igual
 			System.out.println(today + " es igual que " + anotherDay);
 		}
 	}
@@ -135,12 +142,12 @@ public class DatesComparison {
 	 * Ambas instancias son el mismo día pero el tiempo es diferente en 100 mili segundos
 	 * No son iguales durante la comparación
 	 *
-	 * @throws InterruptedException en caso de error
 	 */
-	private static void comparingDatesWithLocalDateTime() throws InterruptedException {
+	private static void comparingDatesWithLocalDateTime() {
+		// Fecha actual
 		LocalDateTime instance = LocalDateTime.now();
-		Thread.sleep(100);
-		LocalDateTime anotherInstance = LocalDateTime.now();
+		// Generamos una segunda fecha diferente (sumamos o restamos una unidad de tiempo, mili-segundos, segundos, minutos...)
+		LocalDateTime anotherInstance = instance.plus(100, ChronoUnit.MILLIS);
 
 		// false
 		System.out.println(instance.isEqual(anotherInstance));

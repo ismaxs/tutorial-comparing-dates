@@ -1,9 +1,13 @@
 package es.ismaelrp;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,8 +21,10 @@ public class DatesComparison {
 			comparingDatesWithDateCompareTo();
 			comparingDatesWithDateObject();
 			comparingDatesWithCalendar();
+			comparingDatesWithApacheUtils();
 			comparingDatesWithLocalDate();
 			comparingDatesWithLocalDateTime();
+			comparingDatesWithZonedLocalDateTime();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -26,7 +32,7 @@ public class DatesComparison {
 
 	/**
 	 * Un método clásico para comparar dos java.util.Date en Java. Java 7+
-	 *
+	 * <p>
 	 * Devuelve 0 si ambas fechas son iguales.
 	 * Devuelve mayor que 0, si fecha es posterior al argumento de fecha.
 	 * Devuelve menor que 0, si la fecha es anterior al argumento de la fecha.
@@ -104,8 +110,27 @@ public class DatesComparison {
 	}
 
 	/**
-	 * En Java 8, se pueden usar los nuevos isBefore(), isAfter(), isEqual() y compareTo() para comparar LocalDate, LocalTime y LocalDateTime.
+	 * Comparación de fechas utilizando la clase de utilidades proporcionada por
+	 * la librería apache commons lang.
 	 *
+	 * @throws ParseException en caso de error
+	 */
+	private static void comparingDatesWithApacheUtils() throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Date date1 = sdf.parse("20-07-2020");
+		Date date2 = sdf.parse("21-07-2020");
+
+		// False
+		System.out.println(DateUtils.isSameDay(date1, date2));
+		// False
+		System.out.println(DateUtils.isSameInstant(date1, date2));
+		// true
+		System.out.println(DateUtils.truncatedEquals(date1, date2, Calendar.MONTH));
+	}
+
+	/**
+	 * En Java 8, se pueden usar los nuevos isBefore(), isAfter(), isEqual() y compareTo() para comparar LocalDate, LocalTime y LocalDateTime.
+	 * <p>
 	 * En este método comparamos dos objetos java.time.LocalDate
 	 */
 	private static void comparingDatesWithLocalDate() {
@@ -137,11 +162,10 @@ public class DatesComparison {
 
 	/**
 	 * Java 8+
-	 *
+	 * <p>
 	 * LocalDateTime y ZonedDateTime también usan parte del tiempo durante la comparación
 	 * Ambas instancias son el mismo día pero el tiempo es diferente en 100 mili segundos
 	 * No son iguales durante la comparación
-	 *
 	 */
 	private static void comparingDatesWithLocalDateTime() {
 		// Fecha actual
@@ -160,5 +184,22 @@ public class DatesComparison {
 		// true
 		System.out.println(
 			instance.toLocalDate().isEqual(anotherInstance.toLocalDate()));
+	}
+
+	/**
+	 * Java 8+ ZonedDateTime, comprobamos como podemos comparar fechas de distintas zonas horarias.
+	 */
+	private static void comparingDatesWithZonedLocalDateTime() {
+		ZonedDateTime dateTimeInNewYork =
+			ZonedDateTime.of(2020, 7, 20, 8, 0, 0, 0, ZoneId.of("America/New_York"));
+		ZonedDateTime dateTimeInBerlin =
+			ZonedDateTime.of(2019, 7, 20, 14, 0, 0, 0, ZoneId.of("Europe/Berlin"));
+
+		// true
+		System.out.println(dateTimeInNewYork.isEqual(dateTimeInBerlin));
+		// false
+		System.out.println(dateTimeInNewYork.isAfter(dateTimeInBerlin));
+		// false
+		System.out.println(dateTimeInNewYork.isBefore(dateTimeInBerlin));
 	}
 }
